@@ -1,0 +1,76 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block nav-link-covid19 %}active{% endblock %}
+{% block page_title %}COVID19{% endblock %}
+
+{% block content %} 
+<h1>COVID-19</h1>
+
+{% if message %}
+<div class="alert alert-danger" role="alert">
+ Something went wrong. Try again in a while. API returned: {{ message}}
+</div>
+{% else %}
+<p>Last update: {{ date }} ({{ date| timesince}} ago)</p>
+
+<!-- begin::List of countries -->
+<div class="mb-2">
+  {% for country in selected_countries %}
+      <img src="{% static 'covid19/img/' %}{{ country.CountryCode }}.png" alt="{{country.CountryCode }}">
+    {% if country.CountryCode != active_country_code %}
+      <a href="{% url 'covid19:index' country.CountryCode %}">
+      {{ country.Country }}</a>
+    {% else %}
+      {{ country.Country }}
+    {% endif %}
+    |
+  {% endfor %}
+</div>
+<!-- end::List of countries -->
+
+<!-- begin::Table -->
+<table class="table table-dark table-striped">
+  <thead>
+    <tr>
+      <th>Population</th>
+      <th>New confirmed</th>
+      <th>Total confirmed</th>
+      <th>New deaths</th>
+      <th>Total deaths</th>
+    </tr>
+  </thead>
+  <tbody>
+    <!-- begin::World Population -->
+    <tr>
+      <td>World</td>
+      <td>{{ global.NewConfirmed|intcomma }}</td>
+      <td>{{ global.TotalConfirmed|intcomma }}</td>
+      <td>{{ global.NewDeaths|intcomma }}</td>
+      <td>{{ global.TotalDeaths|intcomma }}</td>
+    </tr>
+    <!-- end::World Population -->
+    <!-- begin::Country Population -->
+    <tr>
+      <td>{{ country.Country }}</td>
+      <td>{{ country.NewConfirmed|intcomma }}</td>
+      <td>{{ country.TotalConfirmed|intcomma }}</td>
+      <td>{{ country.NewDeaths|intcomma }}</td>
+      <td>{{ country.TotalDeaths|intcomma }}</td>
+    </tr>
+    <!-- end::Country Population -->
+  </tbody>
+</table>
+<!-- end::Table -->
+
+<!-- begin::Alert -->
+<div class="alert alert-primary alert-dismissible fade show" role="alert">
+  To see thousand separators in numbers (e.g., 1,000, rather than 1000) add <code>'django.contrib.humanize'</code> to <code>INSTALLED_APPS</code> in <code>myproject/settings.py</code>. In <code>covid19/index.html</code> add <code>{% templatetag openblock %} load humanize {% templatetag closeblock %}</code>. Then you can use the <code>intcomma</code> filter (e.g., <code>{% templatetag openvariable %} global.TotalConfirmed|intcomma {% templatetag closevariable %}</code>)
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+<!-- end::Alert -->
+
+{% endif %}
+
+{% endblock %}

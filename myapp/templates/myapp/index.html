@@ -1,0 +1,34 @@
+{% extends 'myapp/base.html' %}
+{% load static %}
+
+{% block page_title %}Home{% endblock %}
+{% block nav-link-home %}active{% endblock %}
+
+{% block content %}
+  <h1>Home</h1>
+  <p>This is my home page</p>
+
+  <img src="{% static 'myapp/img/django-logo.png' %}" height="50px" alt="Django logo">
+
+  <!-- Random number -->
+  {% if bool_item %}
+    <p>Random number is: {{mynumber}}</p>
+    {% if mynumber == 7 %}
+      <p>Damn, you are lucky!</p>
+    {% elif mynumber == 13 %}
+      <p>You have no luck!</p>
+    {% endif %}
+  {% endif %}
+  <!-- /Random number -->
+
+  <!-- List of items --> 
+  <p>You have <b>{{some_list|length}}</b> items:<br>
+  <ul>
+    {% for some_item in some_list %}
+    <li>{{some_item}}</li>
+    {% endfor %}
+  </ul>
+  <!-- /List of items -->
+
+  {% include 'myapp/includes/widget.html' %}
+{% endblock %}

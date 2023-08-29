@@ -1,0 +1,30 @@
+{% extends 'myapp/base.html' %}
+
+{% block page_title %}About{% endblock %}
+{% block nav-link-about %}active{% endblock %}
+
+{% block content %}
+  <h1>About</h1>
+
+  <div class="alert alert-success" role="alert">
+    A simple success alert—check it out!
+  </div>
+
+  <!-- Lucky and unlucky numbers -->
+  <p>Lucky number: <b>{{ lucky_number }}</b></p>
+  <p>Unlucky number: <b>{{ unlucky_number }}</b></p>
+  {% if lucky_number == unlucky_number %}
+    <p>Don’t worry, be happy!</p>
+  {% endif %}
+  <!-- /Lucky and unlucky numbers -->
+
+  <!-- Mytech -->
+  <ul>
+    {% for lang in mytech %}
+    <li>
+      <a href="{{ lang.url }}">{{ lang.name }}</a>: {{ lang.level }}
+    </li>
+    {% endfor %}
+  </ul>
+  <!-- /Mytech -->
+{% endblock %}  
