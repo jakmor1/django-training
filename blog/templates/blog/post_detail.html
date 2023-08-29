@@ -1,0 +1,19 @@
+{% extends 'myapp/base.html' %}
+{% load mymarkdown %}
+
+{% block page_title %}Blog{% endblock %}
+{% block nav-link-blog %}active{% endblock %}
+
+{% block content %}
+
+  <h1>Blog</h1>
+
+  {% include 'blog/includes/category_widget.html' %}
+
+  <p>{{ object.title }}</p>
+  <p>{{ object.body|markdown|safe }}</p>
+  <p>{{ object.date_publish|timesince }} ago, {{ object.author }}</p>
+
+{% endblock %}
+
+

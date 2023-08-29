@@ -1,0 +1,41 @@
+{% extends 'myapp/base.html' %}
+
+{% block page_title %}Blog{% endblock %}
+{% block nav-link-blog %}active{% endblock %}
+
+{% block content %}
+  <h1>Blog</h1>
+
+  {% include 'blog/includes/category_widget.html' %}
+  
+  {% for author in author_list%}
+    <a href="{%url 'blog:post_list_author' author.author %}">{{author.author}}</a> |
+  {% endfor %}
+  <br><br>
+  
+  <div class="alert alert-info" role="alert">
+    Showing <strong>{{ object_list|length }}</strong> post{{ object_list|pluralize }} {% if category_name %} from <strong>{{ category_name }}</strong>{% else %}.{% endif %}
+  </div>
+
+  {% if object_list %}
+    <div class="list-group">
+    {% for obj in object_list %}
+      <!-- begin::Post -->
+      <div class="list-group-item">
+        <div class="d-flex w-100 justify-content-between">
+          <a href="{% url 'blog:post_detail_view' obj.id %}">
+             <h5 class="mb-1">{{ obj.title|title }}</h5>
+          </a>
+          <small>Published: {{ obj.date_publish|timesince }} ago</small>
+        </div>
+        <p class="mb-1">{{ obj.body|truncatewords:5 }}</p>
+        <small>Updated: {{ obj.date_update }}</small>
+      </div>
+      <!-- end::Post -->
+    {% endfor %}
+    </div>
+  {% else %}
+    <div class="alert alert-primary" role="alert">No posts to show.</div>
+  {% endif %}
+
+{% endblock %}

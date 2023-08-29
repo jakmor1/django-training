@@ -1,0 +1,17 @@
+  <!-- Category list -->
+  {% if category_name %}
+    <a href="{% url 'blog:post_list_view' %}">All</a> 
+  {% else %}
+    All
+  {% endif %} |
+
+  {% for category in category_list %}
+    {% if category_name == category.name %}
+      {{ category.name }}
+    {% else %}
+      <a href="{% url 'blog:post_list_category' category.name %}">{{ category.name }}</a>
+    {% endif %} |
+
+  {% endfor %}
+  <br><br>
+  <!-- /Category list -->
